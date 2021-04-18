@@ -1,9 +1,10 @@
 [package]
 name = "egzreader"
-version = "1.0.1"
+version = "1.0.2"
 authors = ["Akira Mizuno <akmizno@gmail.com>"]
 edition = "2018"
 description = "A gzip and non-gzip pholymorphic reader."
+keywrods = ["gzip"]
 repository = "https://github.com/akmizno/egzreader"
 license = "MIT"
 
