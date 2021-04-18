@@ -14,8 +14,14 @@
 //! #     read_hello().unwrap();
 //! # }
 //! fn read_hello() -> io::Result<()> {
-//!     let mut r1 = EGZReader::new(File::open("examples/hello.txt")?);    // text file
-//!     let mut r2 = EGZReader::new(File::open("examples/hello.txt.gz")?); // gzip encoded text file
+//!     // text file
+//!     let mut r1 = EGZReader::new(
+//!         File::open("examples/hello.txt")?
+//!     );
+//!     // gzip encoded text file
+//!     let mut r2 = EGZReader::new(
+//!         File::open("examples/hello.txt.gz")?
+//!     );
 //!
 //!     let mut s1 = String::new();
 //!     let mut s2 = String::new();
