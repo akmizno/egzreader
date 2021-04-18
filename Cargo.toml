@@ -3,6 +3,9 @@ name = "egzreader"
 version = "0.1.0"
 authors = ["Akira Mizuno <akmizno@gmail.com>"]
 edition = "2018"
+description = "A gzip and non-gzip pholymorphic reader."
+repository = "https://github.com/akmizno/egzreader"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
