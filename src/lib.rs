@@ -29,11 +29,10 @@
 //!     Ok(())
 //! }
 //! ```
-use std::io::Result;
-use std::io::Read;
-use std::mem;
 use flate2::read::GzDecoder;
-
+use std::io::Read;
+use std::io::Result;
+use std::mem;
 
 struct RawReader<R> {
     preread: [u8; 11],
@@ -43,9 +42,14 @@ struct RawReader<R> {
     reader: R,
 }
 impl<R: Read> RawReader<R> {
-    fn new(preread: [u8; 11], size: usize,  r: R) -> RawReader<R> {
+    fn new(preread: [u8; 11], size: usize, r: R) -> RawReader<R> {
         debug_assert!(size <= preread.len());
-        RawReader{preread: preread, pos: 0, size: size, reader: r}
+        RawReader {
+            preread: preread,
+            pos: 0,
+            size: size,
+            reader: r,
+        }
     }
 }
 impl<R: Read> Read for RawReader<R> {
@@ -63,10 +67,10 @@ impl<R: Read> Read for RawReader<R> {
             if n < buf.len() {
                 match self.read(&mut buf[n..]) {
                     Err(e) => {
-                        self.pos -= n;  // Reset self.pos
+                        self.pos -= n; // Reset self.pos
                         Err(e)
-                    },
-                    Ok(m) => Ok(n + m)
+                    }
+                    Ok(m) => Ok(n + m),
                 }
             } else {
                 Ok(n)
@@ -77,11 +81,13 @@ impl<R: Read> Read for RawReader<R> {
 
 // Wrapper for flate2::GzDecoder
 struct GzReader<R> {
-    reader: GzDecoder<RawReader<R>>
+    reader: GzDecoder<RawReader<R>>,
 }
 impl<R: Read> GzReader<R> {
     fn new(preread: [u8; 11], r: R) -> GzReader<R> {
-        GzReader{ reader: GzDecoder::new(RawReader::new(preread, 11, r)) }
+        GzReader {
+            reader: GzDecoder::new(RawReader::new(preread, 11, r)),
+        }
     }
 }
 impl<R: Read> Read for GzReader<R> {
@@ -96,8 +102,8 @@ enum ReaderType<R> {
 
     // Actual reader states
     Zero,
-    Raw(RawReader<R>),  // non-gzip stream
-    Gz(GzReader<R>),    // gzip stream
+    Raw(RawReader<R>), // non-gzip stream
+    Gz(GzReader<R>),   // gzip stream
 }
 
 impl<R: Read> ReaderType<R> {
@@ -148,7 +154,7 @@ impl<R: Read> Read for ReaderType<R> {
                 // Then, call read().
                 debug_assert!(!self.is_init());
                 self.read(buf)
-            },
+            }
             ReaderType::Zero => Ok(0),
             ReaderType::Raw(raw) => raw.read(buf),
             ReaderType::Gz(gz) => gz.read(buf),
@@ -158,11 +164,13 @@ impl<R: Read> Read for ReaderType<R> {
 
 /// A gzip and non-gzip pholymorphic reader.
 pub struct EGZReader<R> {
-    reader: ReaderType<R>
+    reader: ReaderType<R>,
 }
 impl<R: Read> EGZReader<R> {
     pub fn new(r: R) -> EGZReader<R> {
-        EGZReader{reader: ReaderType::Init(r) }
+        EGZReader {
+            reader: ReaderType::Init(r),
+        }
     }
 }
 impl<R: Read> Read for EGZReader<R> {
@@ -178,20 +186,12 @@ mod tests {
     use super::EGZReader;
 
     // "Hello!"
-    const HELLO: &[u8] = &[
-        0x48, 0x65, 0x6c, 0x6c, 0x6f,
-        0x21,
-    ];
+    const HELLO: &[u8] = &[0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x21];
 
     // "Hello!" encoded by gzip
     const HELLO_GZ: &[u8] = &[
-        0x1f, 0x8b, 0x08, 0x00,
-        0xeb, 0x47, 0x74, 0x60,
-        0x00, 0x03, 0xf3, 0x48,
-        0xcd, 0xc9, 0xc9, 0x57,
-        0x04, 0x00, 0x56, 0xcc,
-        0x2a, 0x9d, 0x06, 0x00,
-        0x00, 0x00,
+        0x1f, 0x8b, 0x08, 0x00, 0xeb, 0x47, 0x74, 0x60, 0x00, 0x03, 0xf3, 0x48, 0xcd, 0xc9, 0xc9,
+        0x57, 0x04, 0x00, 0x56, 0xcc, 0x2a, 0x9d, 0x06, 0x00, 0x00, 0x00,
     ];
 
     #[test]
