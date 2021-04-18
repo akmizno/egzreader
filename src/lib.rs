@@ -1,3 +1,34 @@
+//! A gzip and non-gzip pholymorphic reader.
+//!
+//! [EGZReader](EGZReader) decodes the underlying reader when it is gzipped stream, and
+//! reads as it is when non-gzipped.
+//!
+//! # Examples
+//! ```
+//! use std::io::prelude::*;
+//! use std::io;
+//! use std::fs::File;
+//! use egzreader::EGZReader;
+//!
+//! # fn main() {
+//! #     read_hello().unwrap();
+//! # }
+//! fn read_hello() -> io::Result<()> {
+//!     let mut r1 = EGZReader::new(File::open("examples/hello.txt")?);    // text file
+//!     let mut r2 = EGZReader::new(File::open("examples/hello.txt.gz")?); // gzip encoded text file
+//!
+//!     let mut s1 = String::new();
+//!     let mut s2 = String::new();
+//!
+//!     r1.read_to_string(&mut s1)?;
+//!     r2.read_to_string(&mut s2)?;
+//!
+//!     assert_eq!(s1, "Hello!");
+//!     assert_eq!(s2, "Hello!");
+//!
+//!     Ok(())
+//! }
+//! ```
 use std::io::Result;
 use std::io::Read;
 use std::mem;
@@ -125,6 +156,7 @@ impl<R: Read> Read for ReaderType<R> {
     }
 }
 
+/// A gzip and non-gzip pholymorphic reader.
 pub struct EGZReader<R> {
     reader: ReaderType<R>
 }
