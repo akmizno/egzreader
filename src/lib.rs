@@ -124,7 +124,7 @@ impl<R: Read> ReaderType<R> {
             // The underlying stream is assumed as gzip when
             // - more than 10 bytes (=header size) can be read.
             // - it begins with magic number '0x1f0x8b'.
-            // - its third byte, specifying compression method, whould be '0x08'.
+            // - its third byte, specifying compression method, would be '0x08'.
             Ok(ReaderType::Gz(GzReader::new(buf, reader)))
         } else {
             Ok(ReaderType::Raw(RawReader::new(buf, n, reader)))
