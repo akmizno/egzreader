@@ -10,7 +10,7 @@ Read gzip/non-gzip stream easily in Rust.
 ```toml
 # Cargo.toml
 [dependencies]
-egzreader = "1"
+egzreader = "2"
 ```
 
 ## Example
