@@ -2,9 +2,8 @@
 
 [![crates.io](https://img.shields.io/crates/v/egzreader.svg)](https://crates.io/crates/egzreader)
 [![Documentation](https://docs.rs/egzreader/badge.svg)](https://docs.rs/egzreader)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-A gzip and non-gzip pholymorphic reader in Rust.
+Read gzip/non-gzip stream easily in Rust.
 
 ## Installation
 ```toml

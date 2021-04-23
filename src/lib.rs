@@ -1,4 +1,4 @@
-//! A gzip and non-gzip pholymorphic reader.
+//! Read gzip/non-gzip stream easily.
 //!
 //! [EGZReader](EGZReader) decodes the underlying reader when it is gzipped stream, and
 //! reads as it is when non-gzipped.
