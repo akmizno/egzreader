@@ -51,9 +51,9 @@ impl<R: Read> RawReader<R> {
     fn new(preread: [u8; 11], size: usize, r: R) -> RawReader<R> {
         debug_assert!(size <= preread.len());
         RawReader {
-            preread: preread,
+            preread,
             pos: 0,
-            size: size,
+            size,
             reader: r,
         }
     }
@@ -114,10 +114,7 @@ enum ReaderType<R> {
 
 impl<R: Read> ReaderType<R> {
     fn is_init(&self) -> bool {
-        match self {
-            ReaderType::Init(_) => true,
-            _ => false,
-        }
+        matches!(self, ReaderType::Init(_))
     }
 
     fn make_reader(mut reader: R) -> Result<ReaderType<R>> {
