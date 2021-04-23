@@ -18,15 +18,15 @@ egzreader = "2"
 use std::io::prelude::*;
 use std::io;
 use std::fs::File;
-use egzreader::EGZReader;
+use egzreader::EgzReader;
 
 fn read_hello() -> io::Result<()> {
     // text file
-    let mut r1 = EGZReader::new(
+    let mut r1 = EgzReader::new(
         File::open("examples/hello.txt")?
     );
     // gzip encoded text file
-    let mut r2 = EGZReader::new(
+    let mut r2 = EgzReader::new(
         File::open("examples/hello.txt.gz")?
     );
 
