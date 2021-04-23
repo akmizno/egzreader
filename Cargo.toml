@@ -1,12 +1,12 @@
 [package]
 name = "egzreader"
-version = "1.0.3"
+version = "1.0.4"
 authors = ["Akira Mizuno <akmizno@gmail.com>"]
 edition = "2018"
 description = "A gzip and non-gzip pholymorphic reader."
 keywords = ["gzip"]
 repository = "https://github.com/akmizno/egzreader"
-license = "MIT"
+license = "MIT/Apache-2.0"
 
 [dependencies]
 flate2 = "1.0"
