@@ -1,7 +1,8 @@
 # egzreader
 
-[![crates.io](https://img.shields.io/crates/v/egzreader.svg)](https://crates.io/crates/egzreader)
+[![Crates.io](https://img.shields.io/crates/v/egzreader.svg)](https://crates.io/crates/egzreader)
 [![Documentation](https://docs.rs/egzreader/badge.svg)](https://docs.rs/egzreader)
+[![License](https://img.shields.io/crates/l/egzreader)](https://crates.io/crates/egzreader)
 
 Read gzip/non-gzip stream easily in Rust.
 
