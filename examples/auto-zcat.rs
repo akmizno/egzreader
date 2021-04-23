@@ -1,4 +1,4 @@
-use egzreader::EGZReader;
+use egzreader::EgzReader;
 use std::env;
 use std::fs::File;
 use std::io;
@@ -19,7 +19,7 @@ fn main() {
     args[1..]
         .iter()
         .filter_map(|a| File::open(a).ok())
-        .map(|f| EGZReader::new(BufReader::new(f)))
+        .map(|f| EgzReader::new(BufReader::new(f)))
         .for_each(|mut r| {
             io::copy(&mut r, &mut w).unwrap();
         });

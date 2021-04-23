@@ -1,6 +1,6 @@
 //! Read gzip/non-gzip stream easily.
 //!
-//! [EGZReader](EGZReader) decodes the underlying reader when it is gzipped stream, and
+//! [EgzReader](EgzReader) decodes the underlying reader when it is gzipped stream, and
 //! reads as it is when non-gzipped.
 //!
 //! # Examples
@@ -8,18 +8,18 @@
 //! use std::io::prelude::*;
 //! use std::io;
 //! use std::fs::File;
-//! use egzreader::EGZReader;
+//! use egzreader::EgzReader;
 //!
 //! # fn main() {
 //! #     read_hello().unwrap();
 //! # }
 //! fn read_hello() -> io::Result<()> {
 //!     // text file
-//!     let mut r1 = EGZReader::new(
+//!     let mut r1 = EgzReader::new(
 //!         File::open("examples/hello.txt")?
 //!     );
 //!     // gzip encoded text file
-//!     let mut r2 = EGZReader::new(
+//!     let mut r2 = EgzReader::new(
 //!         File::open("examples/hello.txt.gz")?
 //!     );
 //!
@@ -169,17 +169,17 @@ impl<R: Read> Read for ReaderType<R> {
 }
 
 /// A gzip and non-gzip pholymorphic reader.
-pub struct EGZReader<R> {
+pub struct EgzReader<R> {
     reader: ReaderType<R>,
 }
-impl<R: Read> EGZReader<R> {
-    pub fn new(r: R) -> EGZReader<R> {
-        EGZReader {
+impl<R: Read> EgzReader<R> {
+    pub fn new(r: R) -> EgzReader<R> {
+        EgzReader {
             reader: ReaderType::Init(r),
         }
     }
 }
-impl<R: Read> Read for EGZReader<R> {
+impl<R: Read> Read for EgzReader<R> {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
         self.reader.read(buf)
     }
@@ -189,7 +189,7 @@ impl<R: Read> Read for EGZReader<R> {
 mod tests {
     use std::io::Read;
 
-    use super::EGZReader;
+    use super::EgzReader;
 
     // "Hello!"
     const HELLO: &[u8] = &[0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x21];
@@ -203,7 +203,7 @@ mod tests {
     #[test]
     fn read_zero() {
         let data: &[u8] = &[0; 0];
-        let mut r = EGZReader::new(data);
+        let mut r = EgzReader::new(data);
         let mut s = String::new();
         r.read_to_string(&mut s).unwrap();
         assert_eq!(s, "");
@@ -211,28 +211,28 @@ mod tests {
     #[test]
     fn read_long() {
         let data: &[u8] = &[0x41; 20];
-        let mut r = EGZReader::new(data);
+        let mut r = EgzReader::new(data);
         let mut s = String::new();
         r.read_to_string(&mut s).unwrap();
         assert_eq!(s, "AAAAAAAAAAAAAAAAAAAA");
     }
     #[test]
     fn read_hello_txt() {
-        let mut r = EGZReader::new(HELLO);
+        let mut r = EgzReader::new(HELLO);
         let mut s = String::new();
         r.read_to_string(&mut s).unwrap();
         assert_eq!(s, "Hello!");
     }
     #[test]
     fn read_hello_gz() {
-        let mut r = EGZReader::new(HELLO_GZ);
+        let mut r = EgzReader::new(HELLO_GZ);
         let mut s = String::new();
         r.read_to_string(&mut s).unwrap();
         assert_eq!(s, "Hello!");
     }
     #[test]
     fn read_fake_gz() {
-        let mut r = EGZReader::new(&HELLO_GZ[..10]);
+        let mut r = EgzReader::new(&HELLO_GZ[..10]);
         let mut buf = [0; 11];
         let n = r.read(&mut buf).unwrap();
         assert_eq!(buf[..n], HELLO_GZ[..10]);
