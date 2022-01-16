@@ -76,19 +76,16 @@ impl<R: Read> Read for RawReader<R> {
 
 // Wrapper for flate2::GzDecoder
 #[derive(Debug)]
-struct GzReader<R: Read> {
-    reader: GzDecoder<RawReader<R>>,
-}
+struct GzReader<R: Read>(GzDecoder<RawReader<R>>);
+
 impl<R: Read> GzReader<R> {
     fn new(preread: [u8; 11], r: R) -> GzReader<R> {
-        GzReader {
-            reader: GzDecoder::new(RawReader::new(preread, 11, r)),
-        }
+        GzReader(GzDecoder::new(RawReader::new(preread, 11, r)))
     }
 }
 impl<R: Read> Read for GzReader<R> {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
-        self.reader.read(buf)
+        self.0.read(buf)
     }
 }
 
