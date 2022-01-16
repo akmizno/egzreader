@@ -119,7 +119,23 @@ impl<R: Read> ReaderType<R> {
 
     fn make_reader(mut reader: R) -> Result<ReaderType<R>> {
         let mut buf = [0; 11];
-        let n = reader.read(&mut buf)?;
+
+        let n = {
+            let mut nread = 0;
+            loop {
+                let bytes = reader.read(&mut buf[nread..])?;
+                if bytes == 0 {
+                    break;
+                }
+
+                nread += bytes;
+                if buf.len() <= nread {
+                    break;
+                }
+            }
+            debug_assert!(nread <= buf.len());
+            nread
+        };
 
         if n == 0 {
             Ok(ReaderType::Zero)
