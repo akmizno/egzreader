@@ -62,25 +62,13 @@ impl<R: Read> Read for RawReader<R> {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
         debug_assert!(self.pos <= self.preread.len());
 
-        if self.pos == self.size {
+        if self.size <= self.pos {
             self.reader.read(buf)
         } else {
             debug_assert!(self.pos < self.size);
-
             let n = (&self.preread[self.pos..self.size]).read(buf)?;
             self.pos += n;
-
-            if n < buf.len() {
-                match self.read(&mut buf[n..]) {
-                    Err(e) => {
-                        self.pos -= n; // Reset self.pos
-                        Err(e)
-                    }
-                    Ok(m) => Ok(n + m),
-                }
-            } else {
-                Ok(n)
-            }
+            Ok(n)
         }
     }
 }
