@@ -40,6 +40,7 @@ use std::io::Read;
 use std::io::Result;
 use std::mem;
 
+#[derive(Debug)]
 struct RawReader<R> {
     preread: [u8; 11],
     pos: usize,
@@ -74,6 +75,7 @@ impl<R: Read> Read for RawReader<R> {
 }
 
 // Wrapper for flate2::GzDecoder
+#[derive(Debug)]
 struct GzReader<R> {
     reader: GzDecoder<RawReader<R>>,
 }
@@ -90,6 +92,7 @@ impl<R: Read> Read for GzReader<R> {
     }
 }
 
+#[derive(Debug)]
 enum ReaderType<R> {
     // Initial state
     Init(R),
@@ -170,6 +173,7 @@ impl<R: Read> Read for ReaderType<R> {
 }
 
 /// A gzip and non-gzip pholymorphic reader.
+#[derive(Debug)]
 pub struct EgzReader<R> {
     reader: ReaderType<R>,
 }
