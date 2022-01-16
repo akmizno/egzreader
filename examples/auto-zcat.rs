@@ -19,7 +19,7 @@ fn main() {
     args[1..]
         .iter()
         .filter_map(|a| File::open(a).ok())
-        .map(|f| EgzReader::new(BufReader::new(f)))
+        .map(|f| BufReader::new(EgzReader::new(f)))
         .for_each(|mut r| {
             io::copy(&mut r, &mut w).unwrap();
         });
