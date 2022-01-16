@@ -174,19 +174,16 @@ impl<R: Read> Read for ReaderType<R> {
 
 /// A gzip and non-gzip pholymorphic reader.
 #[derive(Debug)]
-pub struct EgzReader<R> {
-    reader: ReaderType<R>,
-}
+pub struct EgzReader<R>(ReaderType<R>);
+
 impl<R: Read> EgzReader<R> {
     pub fn new(r: R) -> EgzReader<R> {
-        EgzReader {
-            reader: ReaderType::Init(r),
-        }
+        EgzReader(ReaderType::Init(r))
     }
 }
 impl<R: Read> Read for EgzReader<R> {
     fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
-        self.reader.read(buf)
+        self.0.read(buf)
     }
 }
 
