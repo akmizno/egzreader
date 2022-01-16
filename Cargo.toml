@@ -1,6 +1,6 @@
 [package]
 name = "egzreader"
-version = "2.0.2"
+version = "2.0.3"
 authors = ["Akira Mizuno <akmizno@gmail.com>"]
 edition = "2018"
 description = "Read gzip/non-gzip stream easily."
