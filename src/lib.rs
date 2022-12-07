@@ -199,10 +199,23 @@ mod tests {
         0x57, 0x04, 0x00, 0x56, 0xcc, 0x2a, 0x9d, 0x06, 0x00, 0x00, 0x00,
     ];
 
+    // Zero-byte file encoded by gzip
+    const ZERO_GZ: &[u8] = &[
+        0x1f, 0x8b, 0x08, 0x08, 0x32, 0xb1, 0x90, 0x63, 0x00, 0x03, 0x7a, 0x65, 0x72, 0x6f, 0x00,
+        0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    ];
+
     #[test]
     fn read_zero() {
         let data: &[u8] = &[0; 0];
         let mut r = EgzReader::new(data);
+        let mut s = String::new();
+        r.read_to_string(&mut s).unwrap();
+        assert_eq!(s, "");
+    }
+    #[test]
+    fn read_zero_gz() {
+        let mut r = EgzReader::new(ZERO_GZ);
         let mut s = String::new();
         r.read_to_string(&mut s).unwrap();
         assert_eq!(s, "");
